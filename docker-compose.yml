@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  myapp:
+    build:
+      context: ./myapp
+      dockerfile: ./Dockerfile
+    image: myapp
+    depends_on:
+      - traefik
+    expose:
+      - 7777
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.myapp.tls=true"
+      - "traefik.http.routers.myapp.tls.certResolver=myresolver"
+      - "traefik.http.routers.myapp.entrypoints=websecure"
+      - "traefik.http.routers.myapp.rule=Host(`testingnew1.rytfit.ai`)"
+      - "traefik.http.services.myapp.loadbalancer.server.port=7777"
+  myapp1:
+    build:
+      context: ./myapp1
+      dockerfile: ./Dockerfile
+    image: myapp1
+    depends_on:
+      - traefik
+    expose:
+      - 7778
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.myapp1.tls=true"
+      - "traefik.http.routers.myapp1.tls.certResolver=myresolver"
+      - "traefik.http.routers.myapp1.entrypoints=websecure"
+      - "traefik.http.routers.myapp1.rule=Host(`testingnew2.rytfit.ai`)"
+      - "traefik.http.services.myapp1.loadbalancer.server.port=7778"
+  traefik:
+    image: traefik:v2.4
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ./traefik/acme.json:/etc/traefik/acme.json
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certResolver=myresolver"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.rule=Host(`testingnew.rytfit.ai`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.middlewares=myAuth"
+      - "traefik.http.middlewares.myAuth.basicAuth.users=abhi:$$apr1$$khmnO8Lq$$0xD5TdjcjoeUp1bQ3wbAw1" # generate with htpasswd. replace $ with $$
