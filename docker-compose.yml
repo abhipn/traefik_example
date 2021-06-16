@@ -50,4 +50,4 @@ services:
       - "traefik.http.routers.api.rule=Host(`testingnew.rytfit.ai`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.middlewares=myAuth"
-      - "traefik.http.middlewares.myAuth.basicAuth.users=abhi:$$apr1$$khmnO8Lq$$0xD5TdjcjoeUp1bQ3wbAw1" # generate with htpasswd. replace $ with $$
+      - "traefik.http.middlewares.myAuth.basicAuth.users=abhi:$$apr1$$MCvwM2rK$$DrpHaWIjVb.avfZ9lbggb1"
