@@ -1,5 +1,5 @@
 # traefik example
 
-### steps
-chmod 600 ./traefik/traefik.yml
-docker-compose up
+##### Steps
+- `chmod 600 ./traefik/traefik.yml`
+- `docker-compose up`
